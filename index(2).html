@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Hello, World</title>
+		<style type="text/css">
+			html {
+				height: 100%
+			}
+			
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px
+			}
+			
+			#container {
+				height: 100%
+			}
+		</style>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=M15Ux4beOGYPeLcIIKRItfPin9dcAvus">
+			//v2.0版本的引用方式：src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"
+		</script>
+	</head>
+
+	<body>
+		<div id="container"></div>
+		<script type="text/javascript">
+			var map = new BMap.Map("container");          // 创建地图实例  
+			var point = new BMap.Point(114.064556,22.548293);  // 创建点坐标  113.00 25.79
+			map.centerAndZoom(point, 12);                 // 初始化地图，设置中心点坐标和地图级别  
+			map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+			var opts = {
+		      position : point,    // 指定文本标注所在的地理位置
+		      offset   : new BMap.Size(10, -24)    //设置文本偏移量
+		    }
+			var label = new BMap.Label("猪脚饭", opts);  // 创建文本标注对象
+		        label.setStyle({
+		             color : "red",
+		             fontSize : "12px",
+		             height : "20px",
+		             lineHeight : "20px",
+		             fontFamily:"微软雅黑",
+		             background:"yellow"
+		         });
+		    map.addOverlay(label);  
+
+
+			var marker = new BMap.Marker(point);  // 创建标注
+			map.addOverlay(marker);              // 将标注添加到地图中
+
+			marker.addEventListener("click",getAttr);
+
+			function getAttr(){
+
+				var p = marker.getPosition();       //获取marker的位置
+			
+				alert("marker的位置是" + p.lng + "," + p.lat);
+
+
+			}
+			var pointA = new BMap.Point(113.92,22.52);  // 创建点坐标A--深圳南山区政府
+			var marker1 = new BMap.Marker(pointA);
+			map.addOverlay(marker1);
+			var pointB = new BMap.Point(114.05 ,22.53);  // 创建点坐标B--深圳福田区政府
+			var marker2 = new BMap.Marker(pointB);
+			map.addOverlay(marker2);
+
+			var polyline = new BMap.Polyline([pointA,pointB], {strokeColor:"red", strokeWeight:6, strokeOpacity:0.5});  //定义折线
+			map.addOverlay(polyline);
+			marker1.addEventListener("click",qaq);
+			marker2.addEventListener("click",qaq);
+			function qaq(){
+				alert('从南山区政府到福田区政府的距离是：'+(map.getDistance(pointA,pointB)).toFixed(2)+' 米。');  //获取两点距离,保留小数点后两位
+			}
+		</script>
+	</body>
+
+</html>
